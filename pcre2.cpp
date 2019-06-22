@@ -36,6 +36,11 @@ int main()
 
     pcre2_match_data* match_data = pcre2_match_data_create_from_pattern(re, nullptr);
 
+    if (!match_data) {
+        std::cout << "PCRE2 unable to create match data" << std::endl;
+        return 2;
+    }
+
     for (auto line : lines) {
         const PCRE2_SPTR subject = (PCRE2_SPTR) line.c_str();
         const int rc = pcre2_match(re, subject, line.size(), 0, 0, match_data, nullptr);
