@@ -24,6 +24,10 @@ target_compile_features(pcre2 PUBLIC cxx_std_17)
 target_compile_features(pcre_jit PUBLIC cxx_std_17)
 target_compile_features(pcre2_jit PUBLIC cxx_std_17)
 
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    target_compile_options(boost PRIVATE "-fvisibility=hidden")
+endif()
+
 target_link_libraries(boost PRIVATE ${Boost_LIBRARIES} Boost::regex)
 target_link_libraries(pcre PRIVATE "${LibPCRE_LIBRARY}")
 target_link_libraries(pcre2 PRIVATE "${LibPCRE2_LIBRARY}")
