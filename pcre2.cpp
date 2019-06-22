@@ -38,15 +38,15 @@ int main()
 
     for (auto line : lines) {
         const PCRE2_SPTR subject = (PCRE2_SPTR) line.c_str();
-        int rc = pcre2_match(re, subject, line.size(), 0, 0, match_data, nullptr);
+        const int rc = pcre2_match(re, subject, line.size(), 0, 0, match_data, nullptr);
 
         if (rc > 1) {
             const PCRE2_SIZE* ovector = pcre2_get_ovector_pointer(match_data);
 
             for (int i = 1; i < rc; ++i) {
                 const PCRE2_SPTR substring_start = subject + ovector[2*i];
-                int substring_length = ovector[2*i + 1] - ovector[2*i];
-                std::string_view s{(const char*) substring_start, (std::size_t) substring_length};
+                const int substring_length = ovector[2*i + 1] - ovector[2*i];
+                const std::string_view s{(const char*) substring_start, (std::size_t) substring_length};
                 std::cout << "MATCH " << i << ": \"" << s << "\"" << std::endl;
             }
         }
