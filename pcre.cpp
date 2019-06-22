@@ -32,9 +32,16 @@ int main()
         return 1;
     }
 
+    pcre_extra* sd = pcre_study(re, 0, &error);
+
+    if (!sd && error) {
+        std::cout << "PCRE study error: " << error << std::endl;
+        return 2;
+    }
+
     for (auto line : lines) {
         int ovector[OVECCOUNT];
-        const int rc = pcre_exec(re, nullptr, line.c_str(), line.size(), 0, 0, ovector, OVECCOUNT);
+        const int rc = pcre_exec(re, sd, line.c_str(), line.size(), 0, 0, ovector, OVECCOUNT);
 
         if (rc > 1) {
             for (int i = 1; i < rc; ++i) {
@@ -46,5 +53,6 @@ int main()
         }
     }
 
+    pcre_free_study(sd);
     pcre_free(re);
 }
