@@ -29,7 +29,6 @@ int main()
     const char* re{R"(\[([^ ]{8}) \| ([^\]]{19})\] \((?:[^,]+, )?\d+\) [^ ]+ \[([^\]]+)\] RQST END   \[[^\]]+\] *(\d+) ms)"};
 
     hs_database_t* database;
-    hs_scratch_t* scratch;
     hs_compile_error_t* compile_err;
 
     if (hs_compile(re, HS_FLAG_DOTALL | HS_FLAG_SINGLEMATCH, HS_MODE_BLOCK, nullptr, &database, &compile_err) != HS_SUCCESS) {
@@ -37,6 +36,8 @@ int main()
         hs_free_compile_error(compile_err);
         return 1;
     }
+
+    hs_scratch_t* scratch = nullptr;
 
     if (hs_alloc_scratch(database, &scratch) != HS_SUCCESS) {
         std::cout << "Hyperscan unable to allocate scratch space." << std::endl;
