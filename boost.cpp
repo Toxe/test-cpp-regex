@@ -25,6 +25,6 @@ int main()
     for (auto line : lines)
         if (boost::regex_match(line, m, re))
             if (m.size() > 1)
-                for (int i = 1; i < m.size(); ++i)
+                for (int i = 1; i < static_cast<int>(m.size()); ++i)
                     std::cout << "MATCH " << i << ": \"" << m[i] << "\"" << std::endl;
 }

@@ -50,13 +50,13 @@ int main()
 
     for (auto line : lines) {
         int ovector[OVECCOUNT];
-        const int rc = pcre_jit_exec(re, sd, line.c_str(), line.size(), 0, 0, ovector, OVECCOUNT, jit_stack);
+        const int rc = pcre_jit_exec(re, sd, line.c_str(), static_cast<int>(line.size()), 0, 0, ovector, OVECCOUNT, jit_stack);
 
         if (rc > 1) {
             for (int i = 1; i < rc; ++i) {
                 const char* substring_start = line.c_str() + ovector[2*i];
                 const int substring_length = ovector[2*i + 1] - ovector[2*i];
-                const std::string_view s{substring_start, (std::size_t) substring_length};
+                const std::string_view s{substring_start, static_cast<std::string_view::size_type>(substring_length)};
                 std::cout << "MATCH " << i << ": \"" << s << "\"" << std::endl;
             }
         }

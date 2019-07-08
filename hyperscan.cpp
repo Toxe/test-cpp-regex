@@ -3,9 +3,9 @@
 #include <string>
 #include <vector>
 
-static int eventHandler(unsigned int id, unsigned long long from, unsigned long long to, unsigned int flags, void* ctx)
+static int eventHandler(unsigned int, unsigned long long from, unsigned long long to, unsigned int, void* ctx)
 {
-    std::string* s = (std::string*) ctx;
+    std::string* s = static_cast<std::string*>(ctx);
     std::cout << "MATCH from " << from << " to " << to << " in: " << *s << std::endl;
     return 0;
 }
@@ -46,7 +46,7 @@ int main()
     }
 
     for (auto line : lines) {
-        if (hs_scan(database, line.c_str(), line.length(), 0, scratch, eventHandler, &line) != HS_SUCCESS) {
+        if (hs_scan(database, line.c_str(), static_cast<unsigned int>(line.length()), 0, scratch, eventHandler, &line) != HS_SUCCESS) {
             std::cout << "Hyperscan scan error." << std::endl;
             hs_free_scratch(scratch);
             hs_free_database(database);

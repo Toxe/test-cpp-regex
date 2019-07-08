@@ -25,19 +25,19 @@ int main()
     if (!re.ok())
         return 1;
 
-    std::size_t args_count = re.NumberOfCapturingGroups();
+    std::size_t args_count = static_cast<std::size_t>(re.NumberOfCapturingGroups());
 
     std::vector<RE2::Arg> arguments(args_count);
     std::vector<RE2::Arg*> arguments_ptrs(args_count);
     std::vector<std::string> results(args_count);
 
-    for (auto i = 0; i < args_count; ++i) {
+    for (std::size_t i = 0; i < args_count; ++i) {
         arguments[i] = &results[i];
         arguments_ptrs[i] = &arguments[i];
     }
 
     for (auto line : lines)
-        if (RE2::FullMatchN(line, re, arguments_ptrs.data(), args_count))
-            for (auto i = 0; i < args_count; ++i)
+        if (RE2::FullMatchN(line, re, arguments_ptrs.data(), static_cast<int>(args_count)))
+            for (std::size_t i = 0; i < args_count; ++i)
                 std::cout << "MATCH " << i << ": \"" << results[i] << "\"" << std::endl;
 }

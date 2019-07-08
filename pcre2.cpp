@@ -24,7 +24,7 @@ int main()
     int errorcode;
     PCRE2_SIZE erroroffset;
 
-    const PCRE2_SPTR pattern = (PCRE2_SPTR) R"(\[([^ ]{8}) \| ([^\]]{19})\] \((?:[^,]+, )?\d+\) [^ ]+ \[([^\]]+)\] RQST END   \[[^\]]+\] *(\d+) ms)";
+    const PCRE2_SPTR pattern = reinterpret_cast<PCRE2_SPTR>(R"(\[([^ ]{8}) \| ([^\]]{19})\] \((?:[^,]+, )?\d+\) [^ ]+ \[([^\]]+)\] RQST END   \[[^\]]+\] *(\d+) ms)");
     pcre2_code* re = pcre2_compile(pattern, PCRE2_ZERO_TERMINATED, 0, &errorcode, &erroroffset, nullptr);
 
     if (!re) {
@@ -42,7 +42,7 @@ int main()
     }
 
     for (auto line : lines) {
-        const PCRE2_SPTR subject = (PCRE2_SPTR) line.c_str();
+        const PCRE2_SPTR subject = reinterpret_cast<PCRE2_SPTR>(line.c_str());
         const int rc = pcre2_match(re, subject, line.size(), 0, 0, match_data, nullptr);
 
         if (rc > 1) {
@@ -50,8 +50,8 @@ int main()
 
             for (int i = 1; i < rc; ++i) {
                 const PCRE2_SPTR substring_start = subject + ovector[2*i];
-                const int substring_length = ovector[2*i + 1] - ovector[2*i];
-                const std::string_view s{(const char*) substring_start, (std::size_t) substring_length};
+                const int substring_length = static_cast<int>(ovector[2*i + 1] - ovector[2*i]);
+                const std::string_view s{reinterpret_cast<const char*>(substring_start), static_cast<std::string_view::size_type>(substring_length)};
                 std::cout << "MATCH " << i << ": \"" << s << "\"" << std::endl;
             }
         }
