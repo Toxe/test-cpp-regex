@@ -37,7 +37,6 @@ target_compile_options(pcre2 PRIVATE -Wno-old-style-cast)
 target_compile_options(pcre2_jit PRIVATE -Wno-old-style-cast)
 
 target_include_directories(boost PRIVATE ${Boost_INCLUDE_DIRS})
-target_include_directories(re2 PRIVATE ${RE2_INCLUDE_DIRS})
 target_include_directories(hyperscan PRIVATE ${Hyperscan_INCLUDE_DIRS})
 target_include_directories(pcre PRIVATE ${PCRE_INCLUDE_DIRS})
 target_include_directories(pcre2 PRIVATE ${PCRE2_INCLUDE_DIRS})
