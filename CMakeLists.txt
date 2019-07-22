@@ -4,13 +4,12 @@ project("Regular Expressions" LANGUAGES CXX)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 find_package(Boost REQUIRED COMPONENTS regex)
+find_package(re2 CONFIG REQUIRED)
 
-find_library(RE2_LIBRARY re2)
 find_library(Hyperscan_LIBRARY hs)
 find_library(PCRE_LIBRARY pcre)
 find_library(PCRE2_LIBRARY pcre2-8)
 
-find_path(RE2_INCLUDE_DIRS re2/re2.h)
 find_path(Hyperscan_INCLUDE_DIRS hs/hs.h)
 find_path(PCRE_INCLUDE_DIRS pcre.h)
 find_path(PCRE2_INCLUDE_DIRS pcre2.h)
@@ -46,7 +45,7 @@ target_include_directories(pcre_jit PRIVATE ${PCRE_INCLUDE_DIRS})
 target_include_directories(pcre2_jit PRIVATE ${PCRE2_INCLUDE_DIRS})
 
 target_link_libraries(boost PRIVATE ${Boost_LIBRARIES})
-target_link_libraries(re2 PRIVATE "${RE2_LIBRARY}")
+target_link_libraries(re2 PRIVATE re2::re2)
 target_link_libraries(hyperscan PRIVATE "${Hyperscan_LIBRARY}")
 target_link_libraries(pcre PRIVATE "${PCRE_LIBRARY}")
 target_link_libraries(pcre2 PRIVATE "${PCRE2_LIBRARY}")
